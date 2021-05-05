@@ -31,17 +31,17 @@ const LoginForm = () => {
     }
 
     try {
-      console.log('******* I AM IN HERE ********', userFormData)
       // const response = await createUser(userFormData);
       const { data } = await loginUser({
-        variables: { ...userFormData }
+        variables: { ...userFormData } 
       });
-
+      console.log('******* I AM IN HERE ********', data)
+      
       Auth.login(data.loginUser.token);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     }
-
+    
 
     // try {
     //   const response = await loginUser(userFormData);

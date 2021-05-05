@@ -8,7 +8,6 @@ const resolvers = {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
-          // .populate('savedBooks');
         return userData;
       }
     
@@ -19,14 +18,12 @@ const resolvers = {
     users: async () => {
       return User.find()
         .select('-__v -password')
-        // .populate('savedBooks');
     },
 
     // get a user by username
     user: async (parent, { username }) => {
       return User.findOne({ username })
         .select('-__v -password')
-        // .populate('bookData');
     }
 
   },
@@ -55,35 +52,31 @@ const resolvers = {
       return { token, user };
     },
 
-    saveBook: async (parent, args, context) => {
+    saveBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        const book = await savedBooks.create({ ...args, username: context.user.username });
-    
-        await User.findByIdAndUpdate(
-          { userId: context.user._id },
-          { $push: { savedBooks: book._id } },
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $push: { savedBooks: bookId } },
           { new: true }
         );
 
         const token = signToken(context.user);
-        return { token, savedBooks };
+        return { token, updatedUser };
       }
     
       throw new AuthenticationError('You need to be logged in!');
     },
 
-    deleteBook: async (parent, args, context) => {
+    deleteBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        const book = await savedBooks.create({ ...args, username: context.user.username });
-    
-        await User.findByIdAndUpdate(
-          { userId: context.user._id },
-          { $pull: { savedBooks: book._id } },
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { savedBooks: bookId } },
           { new: true }
         );
     
         const token = signToken(context.user);
-        return { token, savedBooks };
+        return { token, updatedUser };
       }
     
       throw new AuthenticationError('You need to be logged in!');

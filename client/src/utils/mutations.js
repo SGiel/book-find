@@ -26,10 +26,19 @@ export const CREATE_USER = gql`
 `;
 
 // export const SAVE_BOOK = gql`
-//   mutation saveBook($userId: ID!, $authors: [String], $image: String, $link: String, $title: String) {
-//     saveBook(userId: $userId, authors: $authors, image: $image, link: $link, title: $title) {
+//   mutation saveBook($bookId: ID!, $authors: [String], $image: String, $link: String, $title: String) {
+//     saveBook(bookId: $bookId, authors: $authors, image: $image, link: $link, title: $title) {
 //       _id
-//       }
+//        username
+//     }
+//   }
+// `;
+
+// export const DELETE_BOOK = gql`
+//   mutation deleteBook($bookId: ID!) {
+//     deleteBook(bookId: $bookId) {
+//       _id
+//        username
 //     }
 //   }
 // `;
