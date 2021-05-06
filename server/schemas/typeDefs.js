@@ -10,6 +10,7 @@ const typeDefs = gql`
     email: String
     bookCount: Int
     savedBooks: [Book]
+    link: String
   }
 
   type Book {
@@ -33,7 +34,8 @@ const typeDefs = gql`
       description: String 
       bookId: ID!, 
       image: String, 
-      title: String! 
+      title: String!
+      link: String
     ): User
     deleteBook(bookId: ID!): User
   }

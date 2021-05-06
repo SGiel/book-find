@@ -1,4 +1,5 @@
 export const getSavedBookIds = () => {
+  console.log("%%%%%%%%%% I AM getting SAVED BOOKS %%%%%%%%%%")
   const savedBookIds = localStorage.getItem('saved_books')
     ? JSON.parse(localStorage.getItem('saved_books'))
     : [];

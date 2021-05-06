@@ -73,7 +73,6 @@ const SearchBooks = () => {
 
     try {
       // const response = await createUser(userFormData);
-      console.log('******* I AM IN HERE ********', bookToSave, token)
       await saveBook({
         variables: { ...bookToSave } 
       });
