@@ -5,7 +5,6 @@ import { useMutation } from '@apollo/react-hooks';
 import { LOGIN_USER } from '../utils/mutations';
 
 
-
 //import { loginUser } from '../utils/API';
 import Auth from '../utils/auth';
 
@@ -32,6 +31,7 @@ const LoginForm = () => {
 
     try {
       // const response = await createUser(userFormData);
+      console.log("***** LOGINUSER *******", userFormData)
       const { data } = await loginUser({
         variables: { ...userFormData } 
       });
@@ -41,7 +41,6 @@ const LoginForm = () => {
     } catch (error) {
       console.error(error);
     }
-    
 
     // try {
     //   const response = await loginUser(userFormData);

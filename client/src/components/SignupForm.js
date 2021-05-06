@@ -45,8 +45,6 @@ const SignupForm = () => {
     }
     
     
-    
-    
     //     if (!response.ok) {
       //       console.log('SOMETHING WENT WRONG')
       //       throw new Error('something went wrong!');
