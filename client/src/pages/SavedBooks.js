@@ -12,15 +12,13 @@ const SavedBooks = () => {
   const [userData, setUserData] = useState({});
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
-  console.log(userDataLength, "!!!!!!")
-
+  console.log("userdatalength", userDataLength)
   const { loading, data: user } = useQuery(QUERY_ME);
-
   const [deleteBook] = useMutation(DELETE_BOOK);
-
   
   useEffect(() => {
     const getUserData = async () => {
+      // if (user) console.log("***** I am HERE *****", user.getMe)
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
         
@@ -28,35 +26,36 @@ const SavedBooks = () => {
           return false;
         }
         
-        console.log("******** I AM HERE ********", user)
-
-        setUserData(user);
+        if (user) setUserData(user.getMe);
       } catch (err) {
         console.error(err);
       }
     };
-
-    if (userDataLength) getUserData();
-  }, [userDataLength]);
-
+    
+    getUserData();
+  }, [user]);
+  
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
-
+    
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+    
     if (!token) {
       return false;
     }
-
+    
     try {
-      const { data } = await deleteBook({
+      console.log("======== bookId ========", bookId)
+      const { updatedUser } = await deleteBook({
         variables: { bookId } 
       });
-
-      const updatedUser = await data.json();
-      setUserData(updatedUser);
-      // upon success, remove book's id from localStorage
-      removeBookId(bookId);
+      console.log("******** I AM HERE ********", updatedUser)
+      if (updatedUser) {
+        // const updatedUser = await data.json();
+        setUserData(updatedUser);
+        // upon success, remove book's id from localStorage
+        removeBookId(bookId);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -76,12 +75,12 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.getMe.savedBooks.length
-            ? `Viewing ${userData.getMe.savedBooks.length} saved ${userData.getMe.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {userData.savedBooks.length
+            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.getMe.savedBooks.map((book) => {
+          {userData.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
