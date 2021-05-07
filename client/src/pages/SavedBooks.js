@@ -1,53 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { DELETE_BOOK} from '../utils/mutations';
+import { DELETE_BOOK } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
-
-
-import Auth from '../utils/auth';
+// import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
-  // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
-  console.log("userdatalength", userDataLength)
-  const { loading, data: user } = useQuery(QUERY_ME);
+  const { loading, data } = useQuery(QUERY_ME);
+
   const [deleteBook] = useMutation(DELETE_BOOK);
   
-  useEffect(() => {
-    const getUserData = async () => {
-      // if (user) console.log("***** I am HERE *****", user.getMe)
-      try {
-        const token = Auth.loggedIn() ? Auth.getToken() : null;
-        
-        if (!token) {
-          return false;
-        }
-        
-        if (user) setUserData(user.getMe);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    
-    getUserData();
-  }, [user]);
+  // const loggedIn = Auth.loggedIn();
+  const user = data?.getMe || [];
+
+  const [userData, setUserData] = useState({user});
   
+  console.log(user);
+  
+  setUserData(user)
+
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
-    
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-    
-    if (!token) {
-      return false;
-    }
-    
+
     try {
       console.log("======== bookId ========", bookId)
       const { updatedUser } = await deleteBook({
-        variables: { bookId } 
+        variables: { bookId }
       });
       console.log("******** I AM HERE ********", updatedUser)
       if (updatedUser) {
@@ -62,7 +41,7 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 
