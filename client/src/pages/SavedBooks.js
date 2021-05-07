@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { DELETE_BOOK } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
-// import Auth from '../utils/auth';
+import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
@@ -11,18 +11,24 @@ const SavedBooks = () => {
 
   const [deleteBook] = useMutation(DELETE_BOOK);
   
-  // const loggedIn = Auth.loggedIn();
   const user = data?.getMe || [];
-
+  const count = data?.getMe?.bookCount || 0;
   const [userData, setUserData] = useState({user});
+  console.log("+++++++", count, user, "+++++++")
   
-  console.log(user);
+  useEffect(() => {
+    console.log("******* I am HERE ******", userData);
+    const getUserData = async () => {
+      if (loggedIn) setUserData(user)
+    }
+    getUserData()
+  }, [count])
   
-  setUserData(user)
-
+  console.log(count);
+  
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
-
+    
     try {
       console.log("======== bookId ========", bookId)
       const { updatedUser } = await deleteBook({
@@ -39,12 +45,16 @@ const SavedBooks = () => {
       console.error(err);
     }
   };
-
+  
   // if data isn't here yet, say so
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  }
+  
+  // if (!userData.length) {
+    //   return <h2>LOADING...</h2>;
+    // }
+    const loggedIn = Auth.loggedIn();
 
+    console.log("Checking loggedIn ", loggedIn)
+    
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
@@ -54,12 +64,17 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
+          {loggedIn &&  userData?.savedBooks?.length
+          // {loggedIn && userData && userData.savedBooks && userData.savedBooks.length
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
+        <h2>
+          {!loggedIn &&
+             ('Please Login')}
+        </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {userData && userData.savedBooks && userData.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
