@@ -31,11 +31,9 @@ const LoginForm = () => {
 
     try {
       // const response = await createUser(userFormData);
-      console.log("***** LOGINUSER *******", userFormData)
       const { data } = await loginUser({
         variables: { ...userFormData } 
       });
-      console.log('******* I AM IN HERE ********', data)
       
       Auth.login(data.loginUser.token);
     } catch (error) {

@@ -13,11 +13,11 @@ const resolvers = {
     
       throw new AuthenticationError('Not logged in');
     },
-        // get all users
-        users: async () => {
-          return User.find()
-            .select('-__v')
-        },
+    // get all users
+    users: async () => {
+      return User.find()
+        .select('-__v')
+    },
   },
 
   Mutation: {
@@ -64,9 +64,9 @@ const resolvers = {
           { _id: context.user._id },
           { $pull: { savedBooks: {bookId: args.bookId }} },
           { new: true }
-        );
-        console.log("%%%%%%% In deleteBook Resolver %%%%%%%", updatedUser)
-        return { updatedUser };
+          );
+          console.log("%%%%%%% In deleteBook Resolver %%%%%%%", updatedUser)
+          return { updatedUser };
       }
     
       throw new AuthenticationError('You need to be logged in!');

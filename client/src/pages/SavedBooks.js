@@ -12,31 +12,31 @@ const SavedBooks = () => {
   const [deleteBook] = useMutation(DELETE_BOOK);
   
   const user = data?.getMe || [];
-  const count = data?.getMe?.bookCount || 0;
+  // const count = data?.getMe?.bookCount || 0;
   const [userData, setUserData] = useState({user});
-  console.log("+++++++", count, user, "+++++++")
+  const loggedIn = Auth.loggedIn();
   
   useEffect(() => {
-    console.log("******* I am HERE ******", userData);
     const getUserData = async () => {
-      if (loggedIn) setUserData(user)
+      if (user) setUserData(user)
     }
     getUserData()
-  }, [count])
-  
-  console.log(count);
+  }, [user])
   
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
-    
     try {
       console.log("======== bookId ========", bookId)
-      const { updatedUser } = await deleteBook({
+      const  { updatedUser }  = await deleteBook({
         variables: { bookId }
       });
+
+      // NOTHING IN updatedUser HERE AFTER DELETEBOOK
       console.log("******** I AM HERE ********", updatedUser)
       if (updatedUser) {
         // const updatedUser = await data.json();
+        console.log("$$$$$", bookId, "$$$$$$$")
+        // Updates userData
         setUserData(updatedUser);
         // upon success, remove book's id from localStorage
         removeBookId(bookId);
@@ -45,16 +45,7 @@ const SavedBooks = () => {
       console.error(err);
     }
   };
-  
-  // if data isn't here yet, say so
-  
-  // if (!userData.length) {
-    //   return <h2>LOADING...</h2>;
-    // }
-    const loggedIn = Auth.loggedIn();
-
-    console.log("Checking loggedIn ", loggedIn)
-    
+      
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
@@ -69,10 +60,10 @@ const SavedBooks = () => {
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
-        <h2>
+        <h3>
           {!loggedIn &&
-             ('Please Login')}
-        </h2>
+             ('You need to login to save books.')}
+        </h3>
         <CardColumns>
           {userData && userData.savedBooks && userData.savedBooks.map((book) => {
             return (
