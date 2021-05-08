@@ -1,5 +1,4 @@
-# book-find
-# personal-portfolio-v3 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+# book-find ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
   <p align="center">
     <img src="https://img.shields.io/badge/Javascript-yellow" />
