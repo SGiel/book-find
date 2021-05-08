@@ -53,7 +53,7 @@ const resolvers = {
         );
         console.log("%%%%%%% In saveBook Resolver %%%%%%%", updatedUser)
 
-        return { updatedUser };
+        return  updatedUser ;
       }
     
       throw new AuthenticationError('You need to be logged in!');
@@ -67,7 +67,7 @@ const resolvers = {
           { new: true }
           );
           console.log("%%%%%%% In deleteBook Resolver %%%%%%%", updatedUser)
-          return { updatedUser } ;
+          return  updatedUser  ;
       }
     
       throw new AuthenticationError('You need to be logged in!');

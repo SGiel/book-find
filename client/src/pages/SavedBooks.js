@@ -7,27 +7,25 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const { data } = useQuery(QUERY_ME);
-
+  const { loading, data } = useQuery(QUERY_ME);
   const [deleteBook] = useMutation(DELETE_BOOK);
-  
   const user = data?.getMe || [];
   // const count = data?.getMe?.bookCount || 0;
   const [userData, setUserData] = useState({user});
   const loggedIn = Auth.loggedIn();
   
+  const getUserData = async (userData) => {
+    if (userData) setUserData(userData)
+  }
   useEffect(() => {
-    const getUserData = async () => {
-      if (user) setUserData(user)
-    }
-    getUserData()
-  }, [user])
+    getUserData(user)
+  })
   
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     try {
       console.log("======== bookId ========", bookId)
-      const  { updatedUser }  = await deleteBook({
+      const  updatedUser  = await deleteBook({
         variables: { bookId }
       });
 
@@ -45,6 +43,7 @@ const SavedBooks = () => {
       console.error(err);
     }
   };
+      
       
   return (
     <>
@@ -65,12 +64,14 @@ const SavedBooks = () => {
              ('You need to login to save books.')}
         </h3>
         <CardColumns>
-          {userData && userData.savedBooks && userData.savedBooks.map((book) => {
-            return (
+        
+          { loading && "Still Loading..." }
+           {!loading && userData && userData.savedBooks && userData.savedBooks.map((book) => {
+           return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Title> <a href={book.link} target="_blank" > <span>{book.title}</span></a> </Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
                   <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
