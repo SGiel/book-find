@@ -26,7 +26,7 @@ export const CREATE_USER = gql`
 `;
 
 export const SAVE_BOOK = gql`
-  mutation saveBook($bookId: String, $authors: [String], $image: String, $title: String!, $description: String) {
+  mutation saveBook($bookId: String!, $authors: [String], $image: String, $title: String!, $description: String) {
     saveBook(bookId: $bookId, authors: $authors, image: $image, title: $title, description: $description) {
       _id
       username
@@ -44,7 +44,7 @@ export const SAVE_BOOK = gql`
 `;
 
 export const DELETE_BOOK = gql`
-  mutation deleteBook($bookId: String) {
+  mutation deleteBook($bookId: String!) {
     deleteBook(bookId: $bookId) {
       _id
       username

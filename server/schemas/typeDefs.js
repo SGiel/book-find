@@ -5,21 +5,21 @@ const { gql } = require('apollo-server-express');
 // define query with type Query {}
 const typeDefs = gql`
   type User {
-    _id: ID
-    username: String
-    email: String
+    _id: ID!
+    username: String!
+    email: String!
     bookCount: Int
     savedBooks: [Book]
     link: String
   }
 
   type Book {
-    bookId: String
+    bookId: String!
     authors: [String]
     description: String
     image: String
     link: String
-    title: String
+    title: String!
   }
 
   type Query {
@@ -33,12 +33,12 @@ const typeDefs = gql`
     saveBook(
       authors: [String],
       description: String 
-      bookId: String, 
+      bookId: String!
       image: String, 
       title: String!
       link: String
     ): User
-    deleteBook(bookId: String): User
+    deleteBook(bookId: String!): User
   }
   
   type Auth {

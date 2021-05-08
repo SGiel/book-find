@@ -7,7 +7,7 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const { loading, data } = useQuery(QUERY_ME);
+  const { data } = useQuery(QUERY_ME);
 
   const [deleteBook] = useMutation(DELETE_BOOK);
   
