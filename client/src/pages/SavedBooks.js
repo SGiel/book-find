@@ -13,6 +13,7 @@ const SavedBooks = () => {
   // const count = data?.getMe?.bookCount || 0;
   const [userData, setUserData] = useState({user});
   const loggedIn = Auth.loggedIn();
+  console.log("&&&&&&&&&&&&&&&&&", user)
   
   const getUserData = async (userData) => {
     if (userData) setUserData(userData)
@@ -30,10 +31,8 @@ const SavedBooks = () => {
       });
 
       // NOTHING IN updatedUser HERE AFTER DELETEBOOK
-      console.log("******** I AM HERE ********", updatedUser)
       if (updatedUser) {
         // const updatedUser = await data.json();
-        console.log("$$$$$", bookId, "$$$$$$$")
         // Updates userData
         setUserData(updatedUser);
         // upon success, remove book's id from localStorage
@@ -71,7 +70,7 @@ const SavedBooks = () => {
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                 <Card.Body>
-                  <Card.Title> <a href={book.link} target="_blank" > <span>{book.title}</span></a> </Card.Title>
+                  <Card.Title> <a href={book.link} target="_blank" rel="noopener noreferrer"> <span>{book.title}</span></a> </Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
                   <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>

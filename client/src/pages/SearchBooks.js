@@ -50,19 +50,19 @@ const SearchBooks = () => {
         image: book.volumeInfo.imageLinks?.thumbnail || '',
         link: book.saleInfo.buyLink
       }));
-
+      
       setSearchedBooks(bookData);
       setSearchInput('');
     } catch (err) {
       console.error(err);
     }
   };
-
+  
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    
     try {
       await saveBook({
         variables: { ...bookToSave } 
