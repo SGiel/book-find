@@ -51,7 +51,6 @@ const resolvers = {
           { $addToSet: { savedBooks: args } },
           { new: true, runValidators: true }
         );
-        console.log("%%%%%%% In saveBook Resolver %%%%%%%", updatedUser)
 
         return  updatedUser ;
       }
@@ -66,7 +65,6 @@ const resolvers = {
           { $pull: { savedBooks: {bookId: args.bookId }} },
           { new: true }
           );
-          console.log("%%%%%%% In deleteBook Resolver %%%%%%%", updatedUser)
           return  updatedUser  ;
       }
     

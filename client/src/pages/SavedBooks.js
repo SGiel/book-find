@@ -13,7 +13,6 @@ const SavedBooks = () => {
   // const count = data?.getMe?.bookCount || 0;
   const [userData, setUserData] = useState({user});
   const loggedIn = Auth.loggedIn();
-  console.log("&&&&&&&&&&&&&&&&&", user)
   
   const getUserData = async (userData) => {
     if (userData) setUserData(userData)
@@ -25,7 +24,6 @@ const SavedBooks = () => {
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     try {
-      console.log("======== bookId ========", bookId)
       const  updatedUser  = await deleteBook({
         variables: { bookId }
       });
