@@ -17,7 +17,7 @@
 ## Screenshots of web application 
 
 ![Screenshot of Book-Find Login](./client/src/assets/images/login-screenshot.png)
-![Screenshot of Book-Find Book Search](./clientsrc/assets/images/book-search-screenshot.png)
+![Screenshot of Book-Find Book Search](./client/src/assets/images/book-search-screenshot.png)
 ![Screenshot of Book-Find Saved Book Buttons](./client/src/assets/images/saved-books-buttons-screenshot.png)
 ![Screenshot of Book-Find Saved Books](./client/src/assets/images/saved-books-screenshot.png)
 
